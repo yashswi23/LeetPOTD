@@ -1,0 +1,34 @@
+
+
+class ProductOfNumbers {
+private:
+    std::vector<int> nums;          // Stores the stream of numbers
+    std::vector<int> prefixProducts; // Stores the prefix products
+
+public:
+    ProductOfNumbers() {
+        prefixProducts.push_back(1); // Initialize with 1 to handle the first multiplication
+    }
+
+    void add(int num) {
+        if (num == 0) {
+            // Reset the prefix products and nums if the number is 0
+            prefixProducts.clear();
+            prefixProducts.push_back(1);
+            nums.clear();
+        } else {
+            nums.push_back(num);
+            prefixProducts.push_back(prefixProducts.back() * num);
+        }
+    }
+
+    int getProduct(int k) {
+        if (k > nums.size()) {
+            // If k is greater than the number of elements, return 0 (since there's a 0 in the last k elements)
+            return 0;
+        }
+        // Calculate the product of the last k elements
+        return prefixProducts.back() / prefixProducts[prefixProducts.size() - k - 1];
+    }
+};
+
