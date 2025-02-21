@@ -1,0 +1,34 @@
+class FindElements {
+public:
+    unordered_set<int> s;
+    void bfs(TreeNode *root, int x){
+       queue<TreeNode*> q;
+       root->val = x;
+       q.push(root);
+       while(!q.empty()){
+        TreeNode* temp = q.front();
+        q.pop();
+        s.insert(temp->val);
+
+        if(temp->left){
+            temp->left->val = 2*temp->val+1;
+        q.push(temp->left);
+        }
+        if(temp->right){
+            temp->right->val = 2*temp->val+2;
+            q.push(temp->right);
+        }
+       }
+    }
+    FindElements(TreeNode* root) {
+
+        s.clear();
+        bfs(root,0);
+        
+    }
+    
+    bool find(int target) {
+        return s.count(target);
+        
+    }
+};
