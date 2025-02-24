@@ -1,0 +1,70 @@
+lass Solution {
+public:
+
+    unordered_map<int, vector<int>> adj;
+    unordered_map<int,int> bobmap;
+    int aliceincome;
+
+    bool dfsbob(int bob, int time, vector<bool>&visit){
+        visit[bob] = true;
+        bobmap[bob] = time;
+        if(bob == 0){
+            return true;
+        }
+
+        for(auto &nghbr : adj[bob]){
+            if(!visit[nghbr]){
+                if(dfsbob(nghbr,time+1,visit) == true){
+                    return true;
+                }
+            }
+        }
+
+        bobmap.erase(bob);
+        return false;
+    }
+
+    void dfsalice(int curr, int time, int income,vector<bool>&visit, vector<int>&amount){
+        visit[curr] = true;
+
+        if(bobmap.find(curr) == bobmap.end() || time <bobmap[curr]){
+            income+= amount[curr];
+        }
+        else if(time == bobmap[curr]){
+            income+= (amount[curr]/2);
+        }
+
+        if(adj[curr].size() == 1 && curr!=0){
+            aliceincome = max(aliceincome, income);
+        }
+
+        for(int &ngh : adj[curr]){
+        if(!visit[ngh]){
+            dfsalice(ngh, time+1, income,visit, amount);
+
+        }
+        }
+    }
+    int mostProfitablePath(vector<vector<int>>& edges, int bob, vector<int>& amount) {
+        int n = amount.size();
+        aliceincome= INT_MIN;
+        if (edges.empty()) return 0;
+        for(vector<int>edge: edges){
+            int u = edge[0];
+            int v = edge[1];
+            adj[u].push_back(v);
+            adj[v].push_back(u);
+        }
+
+        int time=0;
+        vector<bool> visit(n,false);
+        dfsbob(bob,time,visit);
+
+
+        int income = 0;
+        visit.assign(n,false);
+        dfsalice(0,0,income,visit, amount);
+
+        return aliceincome;
+    }
+};
