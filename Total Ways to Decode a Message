@@ -1,0 +1,23 @@
+class Solution {
+    public int numDecodings(String s) {
+        if(s.length()==0 || s.charAt(0) =='0'){
+            return 0;
+        }
+     if(s.length()<2){
+            return s.length();
+        }
+        int prev1=1,prev2=1,ans=0;
+        for(int i=1;i<s.length();i++){
+            ans=0;
+            if(s.charAt(i)!='0'){
+                ans = prev1;
+            }
+            if(s.charAt(i-1)=='1'|| (s.charAt(i-1)=='2' && s.charAt(i)<='6'))
+            ans+= prev2;
+
+            prev2= prev1;
+            prev1= ans;
+        }
+        return ans;
+    }
+}
