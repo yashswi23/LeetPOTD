@@ -1,0 +1,22 @@
+class Solution {
+    public int minOperations(int[][] grid, int x) {
+        List<Integer> ans = new ArrayList<>();
+        for(int[]row: grid){
+            for(int num: row){
+                ans.add(num);
+            }
+        }
+
+        Collections.sort(ans);
+        int med = ans.get(ans.size()/2);
+int op=0;
+        for(int num: ans){
+        int diff = Math.abs(num-med);
+        if(diff %x!=0)return -1;
+
+        op += diff/x;
+        }
+        return op;
+
+    }
+}
