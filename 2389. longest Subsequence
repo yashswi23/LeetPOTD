@@ -1,0 +1,26 @@
+class Solution {
+    public int[] answerQueries(int[] nums, int[] queries) {
+        int s = queries.length;
+        int n = nums.length;
+        int j =0;
+        Arrays.sort(nums);
+        int[] res = new int[s];
+        while(j<s){
+            int sum = 0;
+            int len =0;
+            for(int i=0;i<n;i++){
+                if(nums[i]>queries[j]){
+                    break;
+                }
+                sum+= nums[i];
+                if(sum <= queries[j]){
+                    len++;
+                }
+            }
+            res[i] = len;
+            j++;
+
+        }
+        return res;
+    }
+}
