@@ -1,0 +1,52 @@
+class Solution {
+    public boolean closeStrings(String word1, String word2) {
+        int m = word1.length();
+        int n = word2.length();
+        if(m!=n){
+            return false;
+        }
+
+        List<Integer> freq = new ArrayList<>(26);
+        List<Integer> freq2 = new ArrayList<>(26);
+          for (int i = 0; i < 26; i++) {
+            freq.add(0);
+            freq2.add(0);
+        }
+        for(int i=0;i<m;i++){
+            char ch1 = word1.charAt(i);
+            char ch2 = word2.charAt(i);
+
+            int index1 = ch1-'a';
+            int index2 = ch2-'a';
+
+            freq.set(index1,freq.get(index1)+1);
+            freq2.set(index2,freq2.get(index2)+1);
+
+
+            
+        }
+
+        for(int i=0;i<26;i++){
+            if(freq.get(i)!=0 && freq2.get(i)!=0){
+                continue;
+            }
+
+            if(freq.get(i)==0 && freq2.get(i)==0 ){
+                continue;
+            }
+
+            return false;
+        }
+
+        Collections.sort(freq);
+        Collections.sort(freq2);
+
+        if(freq.equals(freq2)){
+            return true;
+        }
+
+        return false;
+
+
+    }
+}
