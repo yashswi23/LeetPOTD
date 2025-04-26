@@ -1,0 +1,25 @@
+class Solution {
+    public long countSubarrays(int[] nums, int minK, int maxK) {
+        long ans =0;
+        int minpos = -1;
+        int maxpos =-1;
+        int leftbound=-1;
+        for(int i=0;i<nums.length;i++){
+            if(nums[i]<minK || nums[i]> maxK){
+                leftbound =i;
+            }
+            if(nums[i] == minK){
+                minpos = i;
+            }
+            if(nums[i] == maxK){
+                maxpos = i;
+            }
+            int count = Math.min(minpos,maxpos)-leftbound;
+            if(count>0){
+                ans+= count;
+            }
+        }
+
+        return ans;
+    }
+}
