@@ -1,0 +1,37 @@
+class Solution {
+
+    public boolean isconacat(String word, Set<String> st, Map<String ,Boolean> mp){
+        if(mp.containsKey(word)){
+            return mp.get(word);
+        }
+
+        for(int i=0;i<word.length();i++){
+            String prefix = word.substring(0,i+1);
+            String suffix = word.substring(i+1,word.length());
+            if(st.contains(prefix)){
+                if(st.contains(suffix) || isconacat(suffix,st,mp)){
+                    mp.put(word,true);
+                    return true;
+                }
+            }
+        }
+         mp.put(word,false);
+            return false;
+    }
+    public List<String> findAllConcatenatedWordsInADict(String[] words) {
+        List<String> result  = new ArrayList<>();
+        Set<String> st = new HashSet<>();
+        Map<String, Boolean> mp = new HashMap<>();
+        for(String s: words){
+            st.add(s);
+        }
+
+        for(int i=0;i<words.length;i++){
+            String word= words[i];
+            if(isconacat(word,st,mp)){
+                result.add(word);
+            }
+        }
+        return result;
+    }
+}
