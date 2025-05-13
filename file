@@ -1,0 +1,140 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class JobSchedulerGUI extends JFrame {
+    private JobScheduler scheduler = new JobScheduler();
+
+    private JTextField jobIdField = new JTextField(10);
+    private JTextField executionTimeField = new JTextField(5);
+    private JTextField priorityField = new JTextField(5);
+    private JTextField timeSliceField = new JTextField(5);
+    private JTextArea outputArea = new JTextArea(15, 40);
+
+    public JobSchedulerGUI() {
+        setTitle("Simple Job Scheduler");
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLayout(new BorderLayout());
+
+        // Input panel
+        JPanel inputPanel = new JPanel();
+        inputPanel.add(new JLabel("Job ID:"));
+        inputPanel.add(jobIdField);
+        inputPanel.add(new JLabel("Execution Time:"));
+        inputPanel.add(executionTimeField);
+        inputPanel.add(new JLabel("Priority:"));
+        inputPanel.add(priorityField);
+        JButton addButton = new JButton("Add Job");
+        inputPanel.add(addButton);
+
+        // Scheduling panel
+        JPanel schedulePanel = new JPanel();
+        JButton fcfsBtn = new JButton("FCFS");
+        JButton sjfBtn = new JButton("SJF");
+        JButton priorityBtn = new JButton("Priority");
+        JButton rrBtn = new JButton("Round Robin");
+// for file
+
+        JButton exportBtn = new JButton("Export Output");  // 👈 Add this
+
+        JButton clearBtn = new JButton("Clear Jobs");
+        schedulePanel.add(clearBtn);
+
+// Action listener to clear jobs and reset output area
+        clearBtn.addActionListener(e -> {
+            scheduler.clearJobs();  // This clears the job queue
+            outputArea.setText(""); // Clears the output area
+            JOptionPane.showMessageDialog(this, "Jobs cleared!");
+        });
+
+        schedulePanel.add(fcfsBtn);
+        schedulePanel.add(sjfBtn);
+        schedulePanel.add(priorityBtn);
+        schedulePanel.add(new JLabel("Time Slice:"));
+        schedulePanel.add(timeSliceField);
+        schedulePanel.add(rrBtn);
+
+//for file
+
+        schedulePanel.add(exportBtn);  // 👈 This adds the export button to the panel
+
+        // Output area
+        outputArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(outputArea);
+
+        add(inputPanel, BorderLayout.NORTH);
+        add(schedulePanel, BorderLayout.CENTER);
+        add(scrollPane, BorderLayout.SOUTH);
+        pack();
+        setLocationRelativeTo(null); // Center the window
+
+        // Add job action
+        addButton.addActionListener(e -> {
+            try {
+                String id = jobIdField.getText();
+                int time = Integer.parseInt(executionTimeField.getText());
+                int priority = Integer.parseInt(priorityField.getText());
+                Job job = new Job(id, time, priority);
+                scheduler.addJob(job);
+                outputArea.append("Added: " + job + "\n");
+                jobIdField.setText("");
+                executionTimeField.setText("");
+                priorityField.setText("");
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Invalid input. Enter valid numbers for time and priority.");
+            }
+        });
+
+        // FCFS action
+        fcfsBtn.addActionListener(e -> {
+            outputArea.append("\n[FCFS Scheduling]\n");
+            scheduler.fcfsScheduling();
+        });
+
+// code for file upload
+        exportBtn.addActionListener(e -> {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle("Save Output As");
+            int userSelection = fileChooser.showSaveDialog(this);
+
+            if (userSelection == JFileChooser.APPROVE_OPTION) {
+                try {
+                    java.io.File fileToSave = fileChooser.getSelectedFile();
+                    java.io.PrintWriter writer = new java.io.PrintWriter(fileToSave);
+                    writer.write(outputArea.getText());
+                    writer.close();
+                    JOptionPane.showMessageDialog(this, "Output saved to file:\n" + fileToSave.getAbsolutePath());
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(this, "Failed to save file: " + ex.getMessage());
+                }
+            }
+        });
+
+        // SJF action
+        sjfBtn.addActionListener(e -> {
+            outputArea.append("\n[SJF Scheduling]\n");
+            scheduler.sjfScheduling();
+        });
+
+        // Priority Scheduling
+        priorityBtn.addActionListener(e -> {
+            outputArea.append("\n[Priority Scheduling]\n");
+            scheduler.priorityScheduling();
+        });
+
+        // Round Robin
+        rrBtn.addActionListener(e -> {
+            try {
+                int slice = Integer.parseInt(timeSliceField.getText());
+                outputArea.append("\n[Round Robin Scheduling | Time Slice: " + slice + "]\n");
+                scheduler.roundRobinScheduling(slice);
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Please enter a valid time slice.");
+            }
+        });
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new JobSchedulerGUI().setVisible(true));
+    }
+}
