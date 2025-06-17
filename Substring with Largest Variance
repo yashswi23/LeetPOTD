@@ -1,0 +1,46 @@
+class Solution {
+    public int largestVariance(String s) {
+        int[] count= new int[26];
+        for(char ch : s.toCharArray()){
+            count[ch-'a']=1;
+        }
+        int res=0;
+
+        for(char f = 'a';f<='z';f++){
+            for(char sec = 'a';sec<='z';sec++){
+                if(count[f-'a']==0 || count[sec-'a']==0){
+                    continue;
+                }
+
+                int fcount=0;
+                int scount=0;
+                boolean past=false;
+
+                for(char c: s.toCharArray()){
+                    if(c == f){
+                        fcount++;
+                    }
+                    if(c== sec){
+                        scount++;
+                    }
+
+                    if(scount>0){
+                        res = Math.max(res,fcount-scount);
+                    }
+                    else{
+                        if(past == true){
+                            res= Math.max(res,fcount-1);
+                        }
+                    }
+
+                    if(scount>fcount){
+                        fcount=0;
+                        scount=0;
+                        past = true;
+                    }
+                }
+            }
+        }
+        return res;
+    }
+}
