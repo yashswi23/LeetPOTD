@@ -1,0 +1,25 @@
+class Solution {
+    public char kthCharacter(int k) {
+        return find(k,1,'a',0);
+    }
+
+    public char find(int k, int len, char currchar, int shift){
+        while(len<k){
+            len*=2;
+        }
+
+
+        if(len==1){
+            int finalchar = (currchar-'a'+shift)%26;
+            return (char)('a'+finalchar);
+        }
+
+        int mid = len/2;
+        if(k<=mid){
+            return find(k,mid,currchar,shift);
+        }
+        else{
+            return find(k-mid,mid,currchar,shift+1);
+        }
+    }
+}
