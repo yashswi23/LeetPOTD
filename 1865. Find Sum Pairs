@@ -1,0 +1,38 @@
+class FindSumPairs {
+    int[] vec1 ;
+    int[] vec2;
+    Map<Integer,Integer> mp = new HashMap<>();
+
+    public FindSumPairs(int[] nums1, int[] nums2) {
+       vec1 = nums1;
+       vec2 = nums2;
+        for(int num: nums2){
+            mp.put(num,mp.getOrDefault(num,0)+1);
+        }
+    }
+    
+    public void add(int index, int val) {
+        
+        mp.put(vec2[index],mp.get(vec2[index])-1);
+        vec2[index]+= val;
+        mp.put(vec2[index], mp.getOrDefault(vec2[index],0)+1);
+        
+
+    }
+    
+    public int count(int tot) {
+        int c=0;
+        for(int x: vec1){
+            c+= mp.getOrDefault(tot-x,0);
+        }
+        return c;
+        
+    }
+}
+
+/**
+ * Your FindSumPairs object will be instantiated and called as such:
+ * FindSumPairs obj = new FindSumPairs(nums1, nums2);
+ * obj.add(index,val);
+ * int param_2 = obj.count(tot);
+ */
