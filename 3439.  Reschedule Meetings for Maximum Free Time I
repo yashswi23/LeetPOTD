@@ -1,0 +1,32 @@
+class Solution {
+    public int maxFreeTime(int eventTime, int k, int[] startTime, int[] endTime) {
+        int n = startTime.length;
+        int[] gap  = new int[n+1];
+        for(int i=1;i<n;i++){
+            gap[i] = startTime[i]- endTime[i-1];
+        }
+
+        gap[0] = startTime[0];
+        gap[n] = eventTime-endTime[n-1];
+
+
+        //step 2 window size k+1;
+        int sum=0;
+        int maxa =0;
+        int i=0,j=k;
+        for(int w=i;w<=j && w<=n;w++){
+            sum+= gap[w];
+        }
+        maxa = Math.max(maxa, sum);
+
+        while(j<n){
+            sum-= gap[i++];
+            sum+= gap[j++];
+            maxa = Math.max(maxa,sum);
+        }
+
+        return maxa;
+
+
+    }
+}
