@@ -1,0 +1,42 @@
+class Solution {
+    public int mostBooked(int n, int[][] meetings) {
+        long[] busy = new long[n];
+        int[] count = new int[n];
+          Arrays.sort(meetings, (a, b) -> a[0] - b[0]);
+        for (int[] meet : meetings) {
+            int start = meet[0];
+            int end = meet[1];
+
+            long earliest = Long.MAX_VALUE;
+            int roomIn = -1;
+            boolean assign = false;
+            for (int i = 0; i < n; i++) {
+                if(busy[i]< earliest){
+                    earliest = busy[i];
+                    roomIn= i;
+                }
+
+                if(busy[i]<= start){
+                    busy[i]= end;
+                    count[i]++;
+                    assign = true;
+                    break;
+                }
+            }
+
+            if(!assign){
+                busy[roomIn] +=(end-start);
+                count[roomIn]++;
+            }
+        }
+        int max=0,res=0;
+            for(int i=0;i<n;i++){
+                if(count[i]>max){
+                    max = count[i];
+                    res=i;
+                }
+            }
+        return res;
+
+    }
+}
