@@ -1,0 +1,33 @@
+class Solution {
+    boolean isVowel(char ch){
+      ch = Character.toLowerCase(ch);
+        return ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u';
+    }
+
+    boolean consonanats(char ch){
+        return Character.isLetter(ch) && !isVowel(ch);
+
+    }
+    public boolean isValid(String word) {
+      int n = word.length();
+      if(n<3){
+        return false;
+      }
+      boolean validfound= false;
+      boolean consofound = false;
+      for(char ch: word.toCharArray()){
+        if(!Character.isLetterOrDigit(ch)){
+            return false;
+        }
+
+        if(isVowel(ch)){
+            validfound = true;
+        }
+        if(consonanats(ch)){
+            consofound = true;
+        }
+       
+      }
+      return validfound && consofound;
+    }
+}
