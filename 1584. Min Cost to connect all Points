@@ -1,0 +1,85 @@
+class Pair{
+    int weight;
+    int node;
+    
+    Pair(int w, int node){
+        this.weight = w;
+        this.node = node;
+    }
+}
+
+
+class Solution {
+    int[] parent ;
+    int[] rank;
+
+    int find(int node){
+        if(node == parent[node]){
+            return node;
+        }
+        
+        return parent[node] = find(parent[node]);
+    }
+    
+    void union(int x, int y){
+        int x_par = find(x);
+        int y_par = find(y);
+        
+        if(x_par== y_par){
+            return;
+        }
+        
+        if(rank[x_par]< rank[y_par]){
+            parent[x_par] = y_par;
+        }
+        
+        else if(rank[x_par]>rank[y_par]){
+            parent[y_par] = x_par;
+        }
+        else{
+            parent[y_par] = x_par;
+            rank[x_par]++;
+        }
+    }
+    int krusko(ArrayList<int[]> edges){
+        int sum=0;
+        for(int[] temp: edges){
+            int u = temp[0];
+            int v = temp[1];
+            int wt = temp[2];
+            
+            int parent_u = find(u);
+            int parent_v = find(v);
+            
+            if(parent_u != parent_v){
+                union(u,v);
+                sum+= wt;
+            }
+            
+        }
+        return sum;
+    }
+    public int minCostConnectPoints(int[][] points) {
+        parent = new int[points.length];
+        rank = new int[points.length];
+
+        for(int i=0;i<points.length;i++){
+            parent[i]= i;
+            rank[i]= 0;
+        }
+        ArrayList<int[]> edges = new ArrayList<>();
+        for (int i = 0; i < points.length; i++) {
+            for (int j = i + 1; j < points.length; j++) {
+                int x1 = points[i][0], y1 = points[i][1];
+                int x2 = points[j][0], y2 = points[j][1];
+                int dist = Math.abs(x1 - x2) + Math.abs(y1 - y2);
+                edges.add(new int[]{i, j, dist});
+            }
+        }
+
+        // Sort edges by weight
+        Collections.sort(edges, (a, b) -> Integer.compare(a[2], b[2]));
+
+        return krusko(edges);
+    }
+}
