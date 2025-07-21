@@ -1,0 +1,17 @@
+class Solution {
+    public String makeFancyString(String s) {
+        char[] chars = s.toCharArray();
+        int i = 0;  // slow pointer
+        
+        for (int j = 0; j < chars.length; j++) {
+            chars[i] = chars[j];  // copy current character
+            
+            // If we have >=3 consecutive same chars, skip writing this one
+            if (i >= 2 && chars[i] == chars[i-1] && chars[i] == chars[i-2]) {
+                continue;  // skip incrementing i
+            }
+            i++;
+        }
+        return new String(chars, 0, i);
+    }
+}
