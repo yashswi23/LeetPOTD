@@ -1,0 +1,31 @@
+class Solution {
+    public int totalFruit(int[] fruits) {
+
+        int n = fruits.length;
+        int maxlen=0;
+        int i=0,j=0;
+        Map<Integer,Integer> mp = new HashMap<>();
+        while(j<n){
+            int right = fruits[j];
+            mp.put(right,mp.getOrDefault(right,0)+1);
+
+            if(mp.size()>2){
+            while(mp.size()>2){
+                int left = fruits[i];
+                mp.put(left,mp.get(left)-1);
+
+                if(mp.get(left)==0){
+                    mp.remove(left);
+                }
+                i++;
+            }
+            }
+            else{
+
+            maxlen = Math.max(maxlen,j-i+1);
+            }
+            j++;
+            }
+        return maxlen;
+    }
+}
