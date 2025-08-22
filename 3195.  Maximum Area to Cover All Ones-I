@@ -1,0 +1,27 @@
+class Solution {
+    public int minimumArea(int[][] grid) {
+        int m = grid.length;
+        int n = grid[0].length;
+
+        int maxrow =-1;
+        int minrow = m;
+        int maxcol = -1;
+        int mincol = m;
+
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
+                if(grid[i][j]==1){
+                    minrow = Math.min(minrow,i);
+                    maxrow = Math.max(maxrow,i);
+
+                    maxcol = Math.max(maxcol,j);
+                    mincol = Math.min(mincol,j);
+                }
+            }
+
+        }
+
+        return (maxcol-mincol+1)*(maxrow-minrow+1);
+        
+    }
+}
