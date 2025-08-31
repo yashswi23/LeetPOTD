@@ -1,0 +1,66 @@
+class Solution {
+
+    public boolean isSafe(char[][] board, int row, int col, int digit){
+         char ch = (char)(digit + '0');
+        for(int i=0;i<=8;i++){
+            if(board[i][col] == ch){
+                return false;
+            }
+        }
+
+        for(int j=0;j<=8;j++){
+            if(board[row][j] == ch){
+                return false;
+            }
+
+        }
+
+
+        int sr = (row/3)*3;
+        int sc = (col/3)*3;
+
+        for(int i=sr; i< sr+3;i++){
+            for(int j=sc;j< sc+3;j++){
+                if(board[i][j] == ch){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public boolean sudokoSolve(char[][] board, int row, int col){
+        if(row == 9){
+            return true;
+        }
+
+        int nextrow = row;
+        int nextcol=col+1;
+        if(col+1 == 9){
+            nextrow= row+1;
+            nextcol = 0;
+        }
+
+
+        if(board[row][col] !='.'){
+            return sudokoSolve(board,nextrow,nextcol);
+        }
+
+        for(int digit=1;digit<=9;digit++){
+            if(isSafe(board,row,col,digit)){
+                board[row][col] = (char)(digit+'0');
+                if(sudokoSolve(board,nextrow,nextcol)){
+                    return true;
+                }
+                board[row][col] = '.';
+            }
+        }
+        return false;
+    }
+    public void solveSudoku(char[][] board) {
+        int n = board.length;
+        int m = board[0].length;
+
+        sudokoSolve(board,0,0);
+     }
+}
