@@ -1,0 +1,25 @@
+class Solution {
+    public int maxScore(String s) {
+        int n = s.length();
+      int res = Integer.MIN_VALUE;
+      int totalone=0,zero=0;
+      for(int i=0;i<n;i++){
+        if(s.charAt(i)=='1'){
+            totalone++;
+        }
+      }
+
+      for(int i=0;i<n-1;i++){
+        if(s.charAt(i)=='1'){
+            totalone--;
+        }
+        else{
+            zero++;
+        }
+        res = Math.max(res, zero+totalone);
+      }
+
+    
+      return res;
+    }
+}
