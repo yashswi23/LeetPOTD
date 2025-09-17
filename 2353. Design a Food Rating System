@@ -1,0 +1,36 @@
+class FoodRatings {
+    private Map<String, Integer> foodrat;
+    private Map<String, String> foodcus;
+    private Map<String, TreeSet<String>> cusSet;
+
+    public FoodRatings(String[] foods, String[] cuisines, int[] ratings) {
+        foodrat = new HashMap<>();
+        foodcus = new HashMap<>();
+        cusSet = new HashMap<>();
+
+        for (int i=0; i<foods.length; i++) {
+            String food = foods[i], cus = cuisines[i];
+            int rat = ratings[i];
+            foodrat.put(food, rat);
+            foodcus.put(food, cus);
+
+            cusSet.computeIfAbsent(cus, k -> new TreeSet<>((a,b)-> {
+                if(foodrat.get(a).equals(foodrat.get(b)))
+                    return a.compareTo(b);
+                return foodrat.get(b)-foodrat.get(a);
+            })).add(food);
+        }
+    }
+
+    public void changeRating(String food, int newRating) {
+        String cus = foodcus.get(food);
+        TreeSet<String> set = cusSet.get(cus);
+        set.remove(food);          // remove old version
+        foodrat.put(food, newRating);
+        set.add(food);             // add updated version
+    }
+
+    public String highestRated(String cuisine) {
+        return cusSet.get(cuisine).first();
+    }
+}
