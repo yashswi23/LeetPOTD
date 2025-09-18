@@ -1,0 +1,25 @@
+class Solution {
+    public int countStudents(int[] students, int[] sandwiches) {
+        int countzero=0;
+        int countone=0;
+        for(int num: students){
+            if(num==0){
+                countzero++;
+            }
+           
+           else countone++;
+        }
+
+        for(int sand: sandwiches){
+            if(sand == 0){
+                if(countzero==0) return countone;
+                countzero--;
+            }
+            else{
+                if(countone == 0) return countzero;
+                countone--;
+            }
+        }
+        return 0;
+    }
+}
