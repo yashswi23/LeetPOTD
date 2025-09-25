@@ -1,0 +1,23 @@
+class Solution {
+    Map<Node,Node> mp = new HashMap<>();
+    public void dfs(Node node, Node clone){
+        for(Node ngh:node.neighbors){
+            if(!mp.containsKey(ngh)){
+                Node c = new Node(ngh.val);
+                mp.put(ngh,c);
+                dfs(ngh,c);
+            }
+            clone.neighbors.add(mp.get(ngh));
+        }
+    }
+    public Node cloneGraph(Node node) {
+        if(node == null){
+            return null;
+        }
+        Node clone = new Node(node.val);
+        mp.put(node,clone);
+        dfs(node,clone);
+        return clone;
+        
+    }
+}
