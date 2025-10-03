@@ -1,0 +1,13 @@
+static int countPalindrome(String str) {
+  // Write your code here
+    int count=0;
+    String[] words = str.split("\\s");
+    for(String word: words){
+        String rev = new StringBuilder(word).reverse().toString();
+        if(word.equalsIgnoreCase(rev)){
+            count++;
+        }
+    }
+    return count;
+
+}
