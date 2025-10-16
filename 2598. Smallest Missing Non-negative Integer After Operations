@@ -1,0 +1,23 @@
+class Solution {
+    public int findSmallestInteger(int[] nums, int value) {
+      
+        int[] freq = new int[value];
+        for (int num : nums) {
+            int mod = ((num % value) + value) % value;  
+            freq[mod]++;
+        }
+        
+        int mex = 0;
+        int rem = 0; 
+
+        while (true) {
+            if (freq[rem] == 0) {
+                return mex; 
+            }
+            freq[rem]--; 
+            mex++;
+            rem++;
+            if (rem == value) rem = 0; 
+        }
+    }
+}
