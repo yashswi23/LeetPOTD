@@ -1,0 +1,48 @@
+class Solution {
+
+    public boolean ValidCode(String code){
+
+        if(code == null || code.length() ==0){
+            return false;
+        }
+        for(char ch: code.toCharArray()){
+           if(!(Character.isLetterOrDigit(ch) || ch=='_')){
+            return false;
+           }
+
+        }
+        return true;
+    }
+
+    public boolean ValidBus(String bus){
+        return bus.equals("restaurant") || bus.equals("grocery") || bus.equals("pharmacy") || bus.equals("electronics");
+    }
+    public List<String> validateCoupons(String[] code, String[] businessLine, boolean[] isActive) {
+
+        List<String> ans = new ArrayList<>();
+        List<Integer> idx = new ArrayList<>();
+
+        Map<String,Integer> mp = new HashMap<>();
+        mp.put("electronics",0);
+        mp.put("grocery",1);
+        mp.put("pharmacy",2);
+        mp.put("restaurant",3);
+
+        for(int i=0;i<code.length;i++){
+            if(ValidCode(code[i]) && ValidBus(businessLine[i]) && isActive[i]){
+                idx.add(i);
+            }
+        }
+          Collections.sort(idx, (i,j)->{
+            int p1 = mp.get(businessLine[i]);
+            int p2 = mp.get(businessLine[j]);
+            if(p1!=p2) return p1-p2;
+            return code[i].compareTo(code[j]);
+          });
+
+          for(int i: idx){
+            ans.add(code[i]);
+          }
+        return ans;
+    }
+}
